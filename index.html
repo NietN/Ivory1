@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IVORY RELIEF — Design System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ════════════════════════════════════════════
+       IVORY RELIEF — Design System Tokens
+    ════════════════════════════════════════════ */
+    :root {
+      --color-bg:            #F2EFE9;
+      --color-bg-deep:       #EAE6DE;
+      --color-surface:       #EDE9E1;
+      --color-surface-up:    #F5F2EC;
+      --color-glass:         rgba(242,239,233,0.72);
+      --color-glass-strong:  rgba(242,239,233,0.88);
+      --color-border:        rgba(42,37,32,0.08);
+      --color-border-strong: rgba(42,37,32,0.16);
+      --color-border-light:  rgba(255,255,255,0.65);
+      --color-text-1:        #2A2520;
+      --color-text-2:        #7A7068;
+      --color-text-3:        #B0A898;
+      --color-accent:        #8C7355;
+      --color-accent-hover:  #7A6245;
+      --color-accent-dim:    rgba(140,115,85,0.10);
+      --color-cta:           #3D3530;
+      --color-cta-hover:     #2A2520;
+      --color-cta-text:      #F5F2EC;
+      --color-success:       #6A8C6E;
+      --color-danger:        #B05A4A;
+      --color-warning:       #C49A3C;
+      --color-info:          #5A7A8C;
+      --color-toggle-on:     #8C7355;
+      --color-toggle-off:    #D8D3CA;
+
+      --font-display: 'Playfair Display', 'Georgia', serif;
+      --font-body:    'DM Sans', 'Helvetica Neue', sans-serif;
+      --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+
+      --text-xs:   clamp(10px, 0.6rem + 0.2vw, 11px);
+      --text-sm:   clamp(12px, 0.7rem + 0.2vw, 13px);
+      --text-base: clamp(14px, 0.85rem + 0.2vw, 16px);
+      --text-lg:   clamp(16px, 1rem + 0.3vw, 18px);
+      --text-xl:   clamp(18px, 1.1rem + 0.4vw, 22px);
+      --text-2xl:  clamp(22px, 1.4rem + 0.6vw, 28px);
+      --text-3xl:  clamp(28px, 2rem + 1vw, 40px);
+      --text-4xl:  clamp(40px, 3rem + 2vw, 64px);
+
+      --space-1:  4px;  --space-2:  8px;  --space-3:  12px;
+      --space-4:  16px; --space-5:  20px; --space-6:  24px;
+      --space-8:  32px; --space-10: 40px; --space-12: 48px;
+      --space-16: 64px; --space-20: 80px;
+
+      --radius-sm:   8px;
+      --radius-md:   14px;
+      --radius-lg:   20px;
+      --radius-xl:   28px;
+      --radius-2xl:  36px;
+      --radius-full: 9999px;
+
+      --neo-out:
+        6px 6px 16px rgba(160,148,130,0.35),
+        -4px -4px 12px rgba(255,255,255,0.92);
+      --neo-out-sm:
+        3px 3px 8px rgba(160,148,130,0.28),
+        -2px -2px 6px rgba(255,255,255,0.90);
+      --neo-in:
+        inset 4px 4px 10px rgba(160,148,130,0.30),
+        inset -3px -3px 8px rgba(255,255,255,0.88);
+      --neo-in-sm:
+        inset 2px 2px 6px rgba(160,148,130,0.25),
+        inset -2px -2px 5px rgba(255,255,255,0.88);
+      --neo-float:
+        10px 10px 28px rgba(140,120,95,0.28),
+        -6px -6px 20px rgba(255,255,255,0.95);
+      --neo-card:
+        8px 8px 20px rgba(150,135,112,0.25),
+        -5px -5px 14px rgba(255,255,255,0.92);
+
+      --glass-blur:       blur(20px) saturate(160%);
+      --glass-blur-light: blur(10px) saturate(140%);
+
+      --duration-fast:   120ms;
+      --duration-base:   240ms;
+      --duration-slow:   400ms;
+      --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring:cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :root { --duration-fast:0ms; --duration-base:0ms; --duration-slow:0ms; }
+      * { animation-duration:0ms!important; transition-duration:0ms!important; }
+    }
+
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+
+    html { font-size:16px; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+
+    body {
+      background: var(--color-bg);
+      color: var(--color-text-1);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── FABRIC BACKGROUND ── */
+    .fabric-bg {
+      position: fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+    }
+    .fabric-bg__light {
+      position:absolute; inset:0;
+      background:
+        radial-gradient(ellipse 70% 50% at 25% 15%, rgba(255,255,255,0.65) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 75%, rgba(255,255,255,0.45) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 30% at 55% 5%, rgba(255,253,248,0.55) 0%, transparent 50%);
+    }
+    .fabric-bg__vignette {
+      position:absolute; inset:0;
+      background: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 50%, rgba(210,200,185,0.20) 100%);
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      position:relative; z-index:2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-8) var(--space-20);
+    }
+
+    /* ── HEADER ── */
+    .ds-header {
+      padding: var(--space-20) 0 var(--space-16);
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: var(--space-16);
+      animation: fadeUp var(--duration-slow) var(--ease-out) both;
+    }
+
+    .ds-header__eyebrow {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-accent);
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-5);
+      display: flex; align-items: center; gap: var(--space-4);
+    }
+
+    .ds-header__eyebrow::before {
+      content:'';
+      display:inline-block;
+      width: 40px; height: 1px;
+      background: var(--color-accent);
+      opacity: 0.5;
+    }
+
+    .ds-header__title {
+      font-family: var(--font-display);
+      font-size: var(--text-4xl);
+      font-weight: 700;
+      color: var(--color-text-1);
+      letter-spacing: -0.04em;
+      line-height: 0.92;
+      margin-bottom: var(--space-6);
+    }
+
+    .ds-header__title em {
+      font-style: italic;
+      color: var(--color-accent);
+    }
+
+    .ds-header__sub {
+      font-size: var(--text-lg);
+      color: var(--color-text-2);
+      font-weight: 300;
+      max-width: 540px;
+      line-height: 1.55;
+    }
+
+    .ds-header__meta {
+      display: flex; gap: var(--space-8); margin-top: var(--space-8);
+    }
+
+    .meta-item__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-3);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-1);
+    }
+
+    .meta-item__value {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--color-text-1);
+    }
+
+    /* ── SECTION ── */
+    .ds-section {
+      margin-bottom: var(--space-16);
+      animation: fadeUp var(--duration-slow) var(--ease-out) both;
+    }
+
+    .ds-section__header {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-4);
+      margin-bottom: var(--space-8);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .ds-section__num {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--color-accent);
+      letter-spacing: 0.08em;
+    }
+
+    .ds-section__title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      color: var(--color-text-1);
+      letter-spacing: -0.03em;
+    }
+
+    .ds-section__desc {
+      font-size: var(--text-sm);
+      color: var(--color-text-3);
+      margin-left: auto;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── COLOR SECTION ── */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .color-swatch {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--neo-card);
+      border: 1px solid var(--color-border-light);
+      border-bottom-color: var(--color-border);
+      cursor: pointer;
+      transition: transform var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out);
+    }
+
+    .color-swatch:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--neo-float);
+    }
+
+    .color-swatch__block {
+      height: 80px;
+      position: relative;
+      display: flex; align-items: flex-end; padding: var(--space-2) var(--space-3);
+    }
+
+    .color-swatch__check {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.04em;
+      opacity: 0.7;
+      line-height: 1;
+    }
+
+    .color-swatch__body {
+      padding: var(--space-3) var(--space-4);
+      background: var(--color-surface-up);
+    }
+
+    .color-swatch__token {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-accent);
+      margin-bottom: 2px;
+    }
+
+    .color-swatch__name {
+      font-size: var(--text-xs);
+      color: var(--color-text-2);
+      margin-bottom: 2px;
+    }
+
+    .color-swatch__hex {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-3);
+    }
+
+    .color-row {
+      display: flex;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+    }
+
+    .color-row--label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-3);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-3);
+    }
+
+    /* Semantic color row */
+    .semantic-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-4);
+    }
+
+    .semantic-card {
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      box-shadow: var(--neo-card);
+      border: 1px solid var(--color-border-light);
+      border-bottom-color: var(--color-border);
+      background: var(--color-glass);
+      backdrop-filter: var(--glass-blur-light);
+    }
+
+    .semantic-card__dot {
+      width: 32px; height: 32px;
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+    }
+
+    .semantic-card__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-1);
+    }
+
+    .semantic-card__hex {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-3);
+    }
+
+    /* ── TYPOGRAPHY SECTION ── */
+    .type-specimens {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .type-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 120px;
+      align-items: center;
+      gap: var(--space-6);
+      padding: var(--space-4) var(--space-5);
+      border-radius: var(--radius-lg);
+      background: var(--color-glass);
+      border: 1px solid var(--color-border-light);
+      border-bottom-color: var(--color-border);
+      box-shadow: var(--neo-card);
+      transition: all var(--duration-base) var(--ease-out);
+    }
+
+    .type-row:hover {
+      transform: translateX(4px);
+      box-shadow: var(--neo-float);
+    }
+
+    .type-row__meta {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+
+    .type-row__token {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-accent);
+    }
+
+    .type-row__size {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-3);
+    }
+
+    .type-row__specimen {
+      color: var(--color-text-1);
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .type-row__info {
+      font-size: var(--text-xs);
+      color: var(--color-text-3);
+      text-align: right;
+    }
+
+    /* Font family showcase */
+    .font-family-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+      margin-bottom: var(--space-8);
+    }
+
+    .font-card {
+      border-radius: var(--radius-xl);
+      padding: var(--space-8) var(--space-6) var(--space-6);
+      box-shadow: var(--neo-card);
+      border: 1px solid var(--color-border-light);
+      border-bottom-color: var(--color-border);
+      background: var(--color-glass);
+      backdrop-filter: var(--glass-blur-light);
+      overflow: hidden;
+      position: relative;
+      transition: all var(--duration-base) var(--ease-out);
+    }
+
+    .font-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--neo-float);
+    }
+
+    .font-card__bg-letter {
+      position: absolute;
+      right: -10px; bottom: -20px;
+      font-size: 140px;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(42,37,32,0.06);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .font-card__role {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-accent);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-4);
+    }
+
+    .font-card__name-display {
+      font-size: var(--text-3xl);
+      font-weight: 700;
+      color: var(--color-text-1);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: var(--space-3);
+    }
+
+    .font-card__sample {
+      font-size: var(--text-sm);
+      color: var(--color-text-2);
+      line-height: 1.7;
+    }
+
+    .font-card__meta {
+      margin-top: var(--space-5);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--color-border);
+      display: flex; flex-wrap: wrap; gap: var(--space-2);
+    }
+
+    .weight-pill {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-2);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      padding: 2px 10px;
+      box-shadow: var(--neo-in-sm);
+    }
+
+    /* ── SPACING SECTION ── */
+    .spacing-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .spacing-row {
+      display: grid;
+      grid-template-columns: 100px 1fr 60px;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-md);
+      transition: background var(--duration-base) var(--ease-out);
+    }
+
+    .spacing-row:hover { background: var(--color-accent-dim); }
+
+    .spacing-row__token {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-accent);
+    }
+
+    .spacing-row__bar-wrap {
+      height: 16px;
+      display: flex; align-items: center;
+    }
+
+    .spacing-row__bar {
+      height: 8px;
+      border-radius: var(--radius-full);
+      background: linear-gradient(90deg, var(--color-accent), rgba(140,115,85,0.4));
+      box-shadow: var(--neo-out-sm);
+    }
+
+    .spacing-row__val {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-3);
+      text-align: right;
+    }
+
+    /* ── RADIUS SECTION ── */
+    .radius-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: var(--space-5);
+    }
+
+    .radius-card {
+      display: flex; flex-direction: column; align-items: center; gap: var(--space-4);
+    }
+
+    .radius-card__box {
+      width: 72px; height: 72px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border-light);
+      border-bottom-color: var(--color-border);
+      box-shadow: var(--neo-card);
+      transition: all var(--duration-base) var(--ease-out);
+    }
+
+    .radius-card__box:hover {
+      box-shadow: var(--neo-float);
+      transform: scale(1.08);
+    }
+
+    .radius-card__token {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-accent);
+      text-align: center;
+    }
+
+    .radius-card__val {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-3);
+      text-align: center;
+    }
+
+    /* ── SHADOW SECTION ── */
+    .shadow-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+    }
+
+    .shadow-card {
+      padding: var(--space-8) var(--space-6);
+      background: var(--color-bg);
+      border-radius: var(--radius-xl);
+      display: flex; flex-direction: column; align-items: center; gap: var(--space-5);
+      position: relative;
+    }
+
+    .shadow-demo {
+      width: 80px; height: 80px;
+      border-radius: var(--radius-lg);
+      background: var(--color-surface);
+      transition: all var(--duration-base) var(--ease-out);
+    }
+
+    .shadow-demo:hover { transform: scale(1.06); }
+
+    .shadow-meta { text-align: center; }
+
+    .shadow-meta__token {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-accent);
+      margin-bottom: var(--space-1);
+    }
+
+    .shadow-meta__desc {
+      font-size: var(--text-xs);
+      color: var(--color-text-3);
+    }
+
+    /* ── COMPONENT SECTION ── */
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-5);
+    }
+
+    .component-demo {
+      background: var(--color-glass);
+      backdrop-filter: var(--glass-blur-light);
+      border: 1px solid var(--color-border-light);
+      border-bottom-color: var(--color-border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--neo-card);
+      overflow: hidden;
+    }
+
+    .component-demo__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-3);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: var(--space-4) var(--space-6);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .component-demo__content {
+      padding: var(--space-6) var(--space-6);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    /* ── BUTTONS ── */
+    .btn-primary {
+      display:inline-flex; align-items:center; gap:var(--space-2);
+      padding: var(--space-3) var(--space-8);
+      background: var(--color-cta); color: var(--color-cta-text);
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm); font-weight:500; letter-spacing:0.04em;
+      border:none; cursor:pointer; box-shadow:var(--neo-out-sm);
+      transition: all var(--duration-base) var(--ease-spring);
+      text-decoration:none;
+    }
+    .btn-primary:hover { background:var(--color-cta-hover); transform:translateY(-2px); box-shadow:var(--neo-float); }
+    .btn-primary:active { transform:translateY(0); box-shadow:var(--neo-in-sm); }
+
+    .btn-ghost {
+      display:inline-flex; align-items:center; gap:var(--space-2);
+      padding: var(--space-3) var(--space-5);
+      background: var(--color-surface); color: var(--color-text-2);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm); font-weight:400; letter-spacing:0.04em;
+      cursor:pointer; box-shadow:var(--neo-out-sm);
+      transition: all var(--duration-base) var(--ease-out);
+      text-decoration:none;
+    }
+    .btn-ghost:hover { color:var(--color-text-1); box-shadow:var(--neo-out); transform:translateY(-1px); }
+
+    .btn-accent {
+      display:inline-flex; align-items:center; gap:var(--space-2);
+      padding: var(--space-3) var(--space-6);
+      background: var(--color-accent); color: var(--color-cta-text);
+      border-radius: var(--radius-full);
+      font-size: var(--text-sm); font-weight:500; letter-spacing:0.04em;
+      border:none; cursor:pointer; box-shadow:var(--neo-out-sm);
+      transition: all var(--duration-base) var(--ease-spring);
+    }
+    .btn-accent:hover { background:var(--color-accent-hover); transform:translateY(-2px); box-shadow:var(--neo-float); }
+
+    .icon-btn {
+      width:36px; height:36px;
+      border-radius:var(--radius-md); border:none;
+      background:var(--color-surface);
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer; color:var(--color-text-2);
+      box-shadow:var(--neo-out-sm);
+      transition: all var(--duration-base) var(--ease-out);
+    }
+    .icon-btn:hover { color:var(--color-accent); box-shadow:var(--neo-float); transform:translateY(-1px); }
+    .icon-btn:active { transform:translateY(0); box-shadow:var(--neo-in-sm); }
+
+    /* ── BADGES ── */
+    .badge {
+      display:inline-flex; align-items:center; gap:3px;
+      font-family:var(--font-mono); font-size:var(--text-xs);
+      padding:3px 10px; border-radius:var(--radius-full);
+    }
+    .badge--cta    { background:var(--color-cta); color:var(--color-cta-text); }
+    .badge--accent { background:var(--color-accent-dim); color:var(--color-accent); }
+    .badge--success{ background:rgba(106,140,110,0.12); color:var(--color-success); }
+    .badge--danger { background:rgba(176,90,74,0.12); color:var(--color-danger); }
+    .badge--warning{ background:rgba(196,154,60,0.12); color:var(--color-warning); }
+    .badge--neutral{ background:var(--color-surface); color:var(--color-text-2); border:1px solid var(--color-border); box-shadow:var(--neo-in-sm); }
+
+    /* ── TOGGLE ── */
+    .ios-toggle { position:relative; width:44px; height:26px; flex-shrink:0; cursor:pointer; }
+    .ios-toggle input { opacity:0; width:0; height:0; position:absolute; }
+    .ios-track {
+      position:absolute; inset:0;
+      background:var(--color-toggle-off);
+      border-radius:var(--radius-full);
+      transition: background var(--duration-base) var(--ease-out);
+      box-shadow:var(--neo-in-sm);
+      border:1px solid var(--color-border);
+    }
+    .ios-toggle input:checked ~ .ios-track {
+      background:var(--color-toggle-on);
+      box-shadow:var(--neo-in-sm), 0 0 10px rgba(140,115,85,0.2);
+    }
+    .ios-thumb {
+      position:absolute; top:3px; left:3px;
+      width:18px; height:18px;
+      background:white; border-radius:var(--radius-full);
+      transition:transform var(--duration-base) var(--ease-spring);
+      box-shadow:0 1px 4px rgba(0,0,0,0.2);
+    }
+    .ios-toggle input:checked ~ .ios-thumb { transform:translateX(18px); }
+
+    /* ── SEARCH PILL ── */
+    .search-pill {
+      display:flex; align-items:center; gap:var(--space-2);
+      padding:var(--space-2) var(--space-5);
+      background:var(--color-surface);
+      border:1px solid var(--color-border);
+      border-radius:var(--radius-full);
+      cursor:pointer; box-shadow:var(--neo-in-sm);
+      transition:all var(--duration-base) var(--ease-out);
+    }
+    .search-pill:hover { box-shadow:var(--neo-in); }
+    .search-pill span { font-size:var(--text-sm); color:var(--color-text-3); }
+
+    /* ── MOTION SECTION ── */
+    .motion-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+    }
+
+    .motion-card {
+      background: var(--color-glass);
+      border: 1px solid var(--color-border-light);
+      border-bottom-color: var(--color-border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--neo-card);
+      padding: var(--space-6);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .motion-card__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-2);
+    }
+
+    .motion-card__val {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--color-text-1);
+      margin-bottom: var(--space-5);
+    }
+
+    .motion-card__track {
+      height: 6px;
+      background: var(--color-bg-deep);
+      border-radius: var(--radius-full);
+      box-shadow: var(--neo-in-sm);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .motion-card__fill {
+      height: 100%;
+      border-radius: var(--radius-full);
+      background: linear-gradient(90deg, var(--color-accent), rgba(140,115,85,0.5));
+      width: 0%;
+      transition-property: width;
+      transition-timing-function: inherit;
+    }
+
+    .motion-card:hover .motion-card__fill { width: 100%; }
+
+    /* easing curves visual */
+    .easing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+    }
+
+    .easing-card {
+      background: var(--color-glass);
+      border: 1px solid var(--color-border-light);
+      border-bottom-color: var(--color-border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--neo-card);
+      padding: var(--space-6);
+    }
+
+    .easing-card__name {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-2);
+    }
+
+    .easing-card__curve {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-3);
+      margin-bottom: var(--space-4);
+    }
+
+    .easing-card svg { width: 100%; }
+
+    /* ── ICONS SECTION ── */
+    .icon-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+    }
+
+    .icon-demo {
+      display: flex; flex-direction: column; align-items: center; gap: var(--space-3);
+    }
+
+    .icon-slot {
+      width: 52px; height: 52px;
+      border-radius: var(--radius-lg);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border-light);
+      border-bottom-color: var(--color-border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-text-2);
+      box-shadow: var(--neo-out-sm);
+      transition: all var(--duration-base) var(--ease-out);
+      cursor: pointer;
+    }
+
+    .icon-slot:hover { color:var(--color-accent); box-shadow:var(--neo-float); transform:translateY(-3px); }
+
+    .icon-demo__label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--color-text-3);
+      text-align: center;
+    }
+
+    /* ── PRINCIPLES ── */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-5);
+    }
+
+    .principle-card {
+      background: var(--color-glass);
+      border: 1px solid var(--color-border-light);
+      border-bottom-color: var(--color-border);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--neo-card);
+      padding: var(--space-8) var(--space-6);
+      position: relative;
+      overflow: hidden;
+      transition: all var(--duration-base) var(--ease-out);
+    }
+
+    .principle-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--neo-float);
+    }
+
+    .principle-card__num {
+      position: absolute;
+      right: var(--space-4); bottom: -8px;
+      font-family: var(--font-display);
+      font-size: 88px;
+      font-weight: 700;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(42,37,32,0.06);
+      line-height: 1;
+      user-select: none;
+    }
+
+    .principle-card__accent {
+      width: 32px; height: 3px;
+      background: var(--color-accent);
+      border-radius: var(--radius-full);
+      margin-bottom: var(--space-5);
+    }
+
+    .principle-card__title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      color: var(--color-text-1);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: var(--space-3);
+    }
+
+    .principle-card__desc {
+      font-size: var(--text-sm);
+      color: var(--color-text-2);
+      line-height: 1.65;
+    }
+
+    /* ── PROHIBITIONS ── */
+    .prohib-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
+    }
+
+    .prohib-item {
+      display: flex; align-items: flex-start; gap: var(--space-4);
+      padding: var(--space-4) var(--space-5);
+      border-radius: var(--radius-lg);
+      background: var(--color-glass);
+      border: 1px solid var(--color-border-light);
+      border-bottom-color: var(--color-border);
+      box-shadow: var(--neo-card);
+    }
+
+    .prohib-item__x {
+      width: 28px; height: 28px;
+      border-radius: var(--radius-md);
+      background: rgba(176,90,74,0.10);
+      color: var(--color-danger);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 12px; font-weight: 700;
+    }
+
+    .prohib-item__text {
+      font-size: var(--text-sm);
+      color: var(--color-text-2);
+      line-height: 1.55;
+    }
+
+    .prohib-item__text strong {
+      display: block;
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+      color: var(--color-danger);
+      letter-spacing: 0.06em;
+      margin-bottom: 2px;
+    }
+
+    /* ── SNAPSHOT BOX ── */
+    .snapshot-box {
+      background: var(--color-cta);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-10) var(--space-10);
+      box-shadow: var(--neo-float);
+      position: relative;
+      overflow: hidden;
+      margin-top: var(--space-16);
+    }
+
+    .snapshot-box::before {
+      content: '';
+      position: absolute;
+      top: -40%; right: -10%;
+      width: 300px; height: 300px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+
+    .snapshot-box::after {
+      content: '';
+      position: absolute;
+      bottom: -30%; left: -5%;
+      width: 200px; height: 200px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 50%;
+    }
+
+    .snapshot-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: rgba(245,242,236,0.5);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-5);
+    }
+
+    .snapshot-heading {
+      font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      font-weight: 700;
+      color: var(--color-cta-text);
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: var(--space-8);
+    }
+
+    .snapshot-heading em {
+      font-style: italic;
+      color: rgba(245,242,236,0.65);
+    }
+
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-6);
+    }
+
+    .snapshot-item__label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: rgba(245,242,236,0.45);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: var(--space-2);
+    }
+
+    .snapshot-item__val {
+      font-size: var(--text-sm);
+      color: rgba(245,242,236,0.85);
+      line-height: 1.55;
+    }
+
+    .snapshot-item__val strong {
+      display: block;
+      font-weight: 500;
+      color: var(--color-cta-text);
+    }
+
+    .snapshot-fidelity {
+      margin-top: var(--space-8);
+      padding-top: var(--space-6);
+      border-top: 1px solid rgba(245,242,236,0.10);
+      display: flex; align-items: center; gap: var(--space-6);
+    }
+
+    .fid-bar-wrap {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,255,255,0.08);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+    }
+
+    .fid-bar {
+      height: 100%;
+      border-radius: var(--radius-full);
+    }
+
+    .fid-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: rgba(245,242,236,0.55);
+      white-space: nowrap;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .ds-section:nth-child(1)  { animation-delay: 0.05s; }
+    .ds-section:nth-child(2)  { animation-delay: 0.10s; }
+    .ds-section:nth-child(3)  { animation-delay: 0.15s; }
+    .ds-section:nth-child(4)  { animation-delay: 0.20s; }
+    .ds-section:nth-child(5)  { animation-delay: 0.25s; }
+    .ds-section:nth-child(6)  { animation-delay: 0.30s; }
+    .ds-section:nth-child(7)  { animation-delay: 0.35s; }
+    .ds-section:nth-child(8)  { animation-delay: 0.40s; }
+    .ds-section:nth-child(9)  { animation-delay: 0.45s; }
+    .ds-section:nth-child(10) { animation-delay: 0.50s; }
+
+    *:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 3px;
+      border-radius: var(--radius-sm);
+    }
+
+    /* ── TOOLTIP ON HOVER (copy hex) ── */
+    [data-copy] { cursor: pointer; }
+
+    .copy-toast {
+      position: fixed;
+      bottom: var(--space-8);
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--color-cta);
+      color: var(--color-cta-text);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      letter-spacing: 0.08em;
+      padding: var(--space-3) var(--space-6);
+      border-radius: var(--radius-full);
+      box-shadow: var(--neo-float);
+      opacity: 0;
+      transition: all var(--duration-base) var(--ease-spring);
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .copy-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar { width:5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background:var(--color-border-strong); border-radius:var(--radius-full); }
+  </style>
+</head>
+<body>
+
+  <!-- FABRIC BACKGROUND -->
+  <div class="fabric-bg" aria-hidden="true">
+    <div class="fabric-bg__light"></div>
+    <div class="fabric-bg__vignette"></div>
+  </div>
+
+  <main class="page">
+
+    <!-- HEADER -->
+    <header class="ds-header">
+      <p class="ds-header__eyebrow">D4-FE · Design System Extractor</p>
+      <h1 class="ds-header__title">Ivory <em>Relief</em><br>Design System</h1>
+      <p class="ds-header__sub">Engenharia reversa forense de identidade visual. Cada token confirmado diretamente do código-fonte.</p>
+      <div class="ds-header__meta">
+        <div class="meta-item">
+          <div class="meta-item__label">Versão</div>
+          <div class="meta-item__value">v1.0</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-item__label">Fidelidade</div>
+          <div class="meta-item__value">~90% confirmado</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-item__label">Plataforma</div>
+          <div class="meta-item__value">Web · desktop-first</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-item__label">Estilo</div>
+          <div class="meta-item__value">Light Neomorphism</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- 01 — PRINCÍPIOS -->
+    <section class="ds-section">
+      <div class="ds-section__header">
+        <span class="ds-section__num">01—</span>
+        <h2 class="ds-section__title">Princípios</h2>
+        <span class="ds-section__desc">Identidade em decisões</span>
+      </div>
+      <div class="principles-grid">
+        <div class="principle-card">
+          <div class="principle-card__num">1</div>
+          <div class="principle-card__accent"></div>
+          <h3 class="principle-card__title">Material<br>Before Digital</h3>
+          <p class="principle-card__desc">Cada decisão evoca um material físico: marfim, linho, couro envelhecido. Sombras não são decoração — são física simulada.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-card__num">2</div>
+          <div class="principle-card__accent"></div>
+          <h3 class="principle-card__title">Hierarquia<br>Silenciosa</h3>
+          <p class="principle-card__desc">Status e importância comunicados pelo contraste de família tipográfica — serif vs sans vs mono — não por saturação de cor.</p>
+        </div>
+        <div class="principle-card">
+          <div class="principle-card__num">3</div>
+          <div class="principle-card__accent"></div>
+          <h3 class="principle-card__title">Tátil Acima<br>de Eficiente</h3>
+          <p class="principle-card__desc">A interação tem peso e resposta. Spring easing, neo-in para estado ativo. O usuário deve sentir que tocou algo real.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 — CORES -->
+    <section class="ds-section">
+      <div class="ds-section__header">
+        <span class="ds-section__num">02—</span>
+        <h2 class="ds-section__title">Identidade Cromática</h2>
+        <span class="ds-section__desc">Clique para copiar o hex</span>
+      </div>
+
+      <p class="color-row--label">Backgrounds & Superfícies</p>
+      <div class="color-grid" style="margin-bottom: var(--space-6);">
+        <div class="color-swatch" data-copy="#F2EFE9">
+          <div class="color-swatch__block" style="background:#F2EFE9;">
+            <span class="color-swatch__check" style="color:#7A7068;">HSL 40° 22% 93%</span>
+          </div>
+          <div class="color-swatch__body">
+            <div class="color-swatch__token">--color-bg</div>
+            <div class="color-swatch__name">Marfim base</div>
+            <div class="color-swatch__hex">#F2EFE9</div>
+          </div>
+        </div>
+        <div class="color-swatch" data-copy="#EAE6DE">
+          <div class="color-swatch__block" style="background:#EAE6DE;">
+            <span class="color-swatch__check" style="color:#7A7068;">HSL 40° 17% 89%</span>
+          </div>
+          <div class="color-swatch__body">
+            <div class="color-swatch__token">--color-bg-deep</div>
+            <div class="color-swatch__name">Marfim afundado</div>
+            <div class="color-swatch__hex">#EAE6DE</div>
+          </div>
+        </div>
+        <div class="color-swatch" data-copy="#EDE9E1">
+          <div class="color-swatch__block" style="background:#EDE9E1;">
+            <span class="color-swatch__check" style="color:#7A7068;">HSL 40° 19% 90%</span>
+          </div>
+          <div class="color-swatch__body">
+            <div class="color-swatch__token">--color-surface</div>
+            <div class="color-swatch__name">Surface base</div>
+            <div class="color-swatch__hex">#EDE9E1</div>
+          </div>
+        </div>
+        <div class="color-swatch" data-copy="#F5F2EC">
+          <div class="color-swatch__block" style="background:#F5F2EC;">
+            <span class="color-swatch__check" style="color:#7A7068;">HSL 40° 26% 95%</span>
+          </div>
+          <div class="color-swatch__body">
+            <div class="color-swatch__token">--color-surface-up</div>
+            <div class="color-swatch__name">Surface alta</div>
+            <div class="color-swatch__hex">#F5F2EC</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="color-row--label">Texto</p>
+      <div class="color-grid" style="margin-bottom: var(--space-6);">
+        <div class="color-swatch" data-copy="#2A2520">
+          <div class="color-swatch__block" style="background:#2A2520;">
+            <span class="color-swatch__check" style="color:#B0A898;">13.5:1 ✓ AAA</span>
+          </div>
+          <div class="color-swatch__body">
+            <div class="color-swatch__token">--color-text-1</div>
+            <div class="color-swatch__name">Primário</div>
+            <div class="color-swatch__hex">#2A2520</div>
+          </div>
+        </div>
+        <div class="color-swatch" data-copy="#7A7068">
+          <div class="color-swatch__block" style="background:#7A7068;">
+            <span class="color-swatch__check" style="color:#F5F2EC;">4.2:1 ✓ AA</span>
+          </div>
+          <div class="color-swatch__body">
+            <div class="color-swatch__token">--color-text-2</div>
+            <div class="color-swatch__name">Secundário</div>
+            <div class="color-swatch__hex">#7A7068</div>
+          </div>
+        </div>
+        <div class="color-swatch" data-copy="#B0A898">
+          <div class="color-swatch__block" style="background:#B0A898;">
+            <span class="color-swatch__check" style="color:#2A2520;">1.9:1 ⚠ ornamental</span>
+          </div>
+          <div class="color-swatch__body">
+            <div class="color-swatch__token">--color-text-3</div>
+            <div class="color-swatch__name">Terciário / ornamental</div>
+            <div class="color-swatch__hex">#B0A898</div>
+          </div>
+        </div>
+        <div class="color-swatch" data-copy="#F5F2EC">
+          <div class="color-swatch__block" style="background:#3D3530;">
+            <span class="color-swatch__check" style="color:#F5F2EC;">Sobre CTA</span>
+          </div>
+          <div class="color-swatch__body">
+            <div class="color-swatch__token">--color-text-inverse</div>
+            <div class="color-swatch__name">Invertido</div>
+            <div class="color-swatch__hex">#F5F2EC</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="color-row--label">Accent & CTA</p>
+      <div class="color-grid" style="margin-bottom: var(--space-6);">
+        <div class="color-swatch" data-copy="#8C7355">
+          <div class="color-swatch__block" style="background:#8C7355;">
+            <span class="color-swatch__check" style="color:rgba(245,242,236,0.7);">HSL 31° 24% 44%</span>
+          </div>
+          <div class="color-swatch__body">
+            <div class="color-swatch__token">--color-accent</div>
+            <div class="color-swatch__name">Âmbar dourado</div>
+            <div class="color-swatch__hex">#8C7355</div>
+          </div>
+        </div>
+        <div class="color-swatch" data-copy="#7A6245">
+          <div class="color-swatch__block" style="background:#7A6245;">
+            <span class="color-swatch__check" style="color:rgba(245,242,236,0.7);">Hover -6% L</span>
+          </div>
+          <div class="color-swatch__body">
+            <div class="color-swatch__token">--color-accent-hover</div>
+            <div class="color-swatch__name">Âmbar hover</div>
+            <div class="color-swatch__hex">#7A6245</div>
+          </div>
+        </div>
+        <div class="color-swatch" data-copy="#3D3530">
+          <div class="color-swatch__block" style="background:#3D3530;">
+            <span class="color-swatch__check" style="color:rgba(245,242,236,0.7);">11.5:1 ✓ AAA</span>
+          </div>
+          <div class="color-swatch__body">
+            <div class="color-swatch__token">--color-cta</div>
+            <div class="color-swatch__name">Espresso escuro</div>
+            <div class="color-swatch__hex">#3D3530</div>
+          </div>
+        </div>
+        <div class="color-swatch" data-copy="#2A2520">
+          <div class="color-swatch__block" style="background:#2A2520;">
+            <span class="color-swatch__check" style="color:rgba(245,242,236,0.7);">Hover state</span>
+          </div>
+          <div class="color-swatch__body">
+            <div class="color-swatch__token">--color-cta-hover</div>
+            <div class="color-swatch__name">Espresso hover</div>
+            <div class="color-swatch__hex">#2A2520</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="color-row--label">Paleta Semântica</p>
+      <div class="semantic-grid">
+        <div class="semantic-card">
+          <div class="semantic-card__dot" style="background:rgba(106,140,110,0.12);">✓</div>
+          <div class="semantic-card__label" style="color:var(--color-success);">Sucesso</div>
+          <div class="semantic-card__hex">#6A8C6E</div>
+        </div>
+        <div class="semantic-card">
+          <div class="semantic-card__dot" style="background:rgba(176,90,74,0.12);">✕</div>
+          <div class="semantic-card__label" style="color:var(--color-danger);">Erro / Perigo</div>
+          <div class="semantic-card__hex">#B05A4A</div>
+        </div>
+        <div class="semantic-card">
+          <div class="semantic-card__dot" style="background:rgba(196,154,60,0.12);">!</div>
+          <div class="semantic-card__label" style="color:var(--color-warning);">Alerta</div>
+          <div class="semantic-card__hex">#C49A3C <span style="color:var(--color-text-3);font-size:9px;">[est.]</span></div>
+        </div>
+        <div class="semantic-card">
+          <div class="semantic-card__dot" style="background:rgba(90,122,140,0.12);">i</div>
+          <div class="semantic-card__label" style="color:var(--color-info);">Info</div>
+          <div class="semantic-card__hex">#5A7A8C <span style="color:var(--color-text-3);font-size:9px;">[est.]</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 — TIPOGRAFIA -->
+    <section class="ds-section">
+      <div class="ds-section__header">
+        <span class="ds-section__num">03—</span>
+        <h2 class="ds-section__title">Sistema Tipográfico</h2>
+        <span class="ds-section__desc">3 famílias · 9 níveis · escala fluid</span>
+      </div>
+
+      <div class="font-family-grid">
+        <div class="font-card">
+          <div class="font-card__bg-letter" style="font-family:var(--font-display);">P</div>
+          <div class="font-card__role">Display · Heading</div>
+          <div class="font-card__name-display" style="font-family:var(--font-display);">Playfair<br><em>Display</em></div>
+          <p class="font-card__sample" style="font-family:var(--font-display);">Heranças em <em>marfim</em>. A tipografia que transforma preço em ritual e produto em desejo.</p>
+          <div class="font-card__meta">
+            <span class="weight-pill" style="font-family:var(--font-display); font-weight:400;">400 Regular</span>
+            <span class="weight-pill" style="font-family:var(--font-display); font-weight:700;">700 Bold</span>
+            <span class="weight-pill" style="font-family:var(--font-display); font-style:italic;">Italic</span>
+          </div>
+        </div>
+        <div class="font-card">
+          <div class="font-card__bg-letter" style="font-family:var(--font-body); font-weight:300;">D</div>
+          <div class="font-card__role">Body · Interface</div>
+          <div class="font-card__name-display" style="font-family:var(--font-body); letter-spacing:-0.01em;">DM Sans</div>
+          <p class="font-card__sample" style="font-family:var(--font-body);">Funcional e neutro. Serve de ancoragem para o Playfair, sem competir. Legibilidade em contextos de dados e navegação.</p>
+          <div class="font-card__meta">
+            <span class="weight-pill" style="font-family:var(--font-body); font-weight:300;">300 Light</span>
+            <span class="weight-pill" style="font-family:var(--font-body); font-weight:400;">400 Regular</span>
+            <span class="weight-pill" style="font-family:var(--font-body); font-weight:500;">500 Medium</span>
+          </div>
+        </div>
+        <div class="font-card">
+          <div class="font-card__bg-letter" style="font-family:var(--font-mono);">J</div>
+          <div class="font-card__role">Mono · Data · Labels</div>
+          <div class="font-card__name-display" style="font-family:var(--font-mono); font-size:var(--text-2xl);">JetBrains<br>Mono</div>
+          <p class="font-card__sample" style="font-family:var(--font-mono); font-size:var(--text-xs);">01— SEÇÃO / #8C7355 / €3,400 / 272 kWh / Aug 2025 / badge · label</p>
+          <div class="font-card__meta">
+            <span class="weight-pill" style="font-family:var(--font-mono); font-weight:400;">400 Regular</span>
+            <span class="weight-pill" style="font-family:var(--font-mono); font-weight:500;">500 Medium</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="type-specimens">
+        <div class="type-row">
+          <div class="type-row__meta">
+            <div class="type-row__token">--text-4xl</div>
+            <div class="type-row__size">clamp(40–64px)</div>
+          </div>
+          <div class="type-row__specimen" style="font-family:var(--font-display); font-size:var(--text-4xl); font-weight:700; letter-spacing:-0.04em; line-height:0.95;">Ivory Relief</div>
+          <div class="type-row__info">Hero Title</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row__meta">
+            <div class="type-row__token">--text-3xl</div>
+            <div class="type-row__size">clamp(28–40px)</div>
+          </div>
+          <div class="type-row__specimen" style="font-family:var(--font-display); font-size:var(--text-3xl); font-weight:700; letter-spacing:-0.04em; line-height:1;">€ 1,482</div>
+          <div class="type-row__info">Metric Value</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row__meta">
+            <div class="type-row__token">--text-2xl</div>
+            <div class="type-row__size">clamp(22–28px)</div>
+          </div>
+          <div class="type-row__specimen" style="font-family:var(--font-display); font-size:var(--text-2xl); font-weight:700; letter-spacing:-0.03em;">New Collection</div>
+          <div class="type-row__info">Section Title</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row__meta">
+            <div class="type-row__token">--text-xl</div>
+            <div class="type-row__size">clamp(18–22px)</div>
+          </div>
+          <div class="type-row__specimen" style="font-family:var(--font-display); font-size:var(--text-xl); font-weight:700; letter-spacing:-0.02em;">Heritage Suit — Camel</div>
+          <div class="type-row__info">Product Name</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row__meta">
+            <div class="type-row__token">--text-base</div>
+            <div class="type-row__size">clamp(14–16px)</div>
+          </div>
+          <div class="type-row__specimen" style="font-size:var(--text-base); font-weight:400; color:var(--color-text-2);">A single garment can carry decades of craftsmanship, distilled into fabric and form.</div>
+          <div class="type-row__info">Body Text</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row__meta">
+            <div class="type-row__token">--text-sm</div>
+            <div class="type-row__size">clamp(12–13px)</div>
+          </div>
+          <div class="type-row__specimen" style="font-size:var(--text-sm); color:var(--color-text-2);">Shipped · Expected Feb 28 · Living Room · Beko Inverter</div>
+          <div class="type-row__info">Secondary Body</div>
+        </div>
+        <div class="type-row">
+          <div class="type-row__meta">
+            <div class="type-row__token">--text-xs</div>
+            <div class="type-row__size">clamp(10–11px)</div>
+          </div>
+          <div class="type-row__specimen" style="font-family:var(--font-mono); font-size:var(--text-xs); letter-spacing:0.18em; text-transform:uppercase; color:var(--color-text-3);">WINTER COLLECTION · 2025 · PLATINUM TIER</div>
+          <div class="type-row__info">Label / Caption</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 — ESPAÇAMENTO -->
+    <section class="ds-section">
+      <div class="ds-section__header">
+        <span class="ds-section__num">04—</span>
+        <h2 class="ds-section__title">Espaçamento</h2>
+        <span class="ds-section__desc">Base 4px · múltiplos lineares</span>
+      </div>
+      <div class="spacing-list">
+        <div class="spacing-row"><span class="spacing-row__token">--space-1</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width:4px;"></div></div><span class="spacing-row__val">4px</span></div>
+        <div class="spacing-row"><span class="spacing-row__token">--space-2</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width:8px;"></div></div><span class="spacing-row__val">8px</span></div>
+        <div class="spacing-row"><span class="spacing-row__token">--space-3</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width:12px;"></div></div><span class="spacing-row__val">12px</span></div>
+        <div class="spacing-row"><span class="spacing-row__token">--space-4</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width:16px;"></div></div><span class="spacing-row__val">16px</span></div>
+        <div class="spacing-row"><span class="spacing-row__token">--space-5</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width:20px;"></div></div><span class="spacing-row__val">20px</span></div>
+        <div class="spacing-row"><span class="spacing-row__token">--space-6</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width:24px;"></div></div><span class="spacing-row__val">24px</span></div>
+        <div class="spacing-row"><span class="spacing-row__token">--space-8</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width:32px;"></div></div><span class="spacing-row__val">32px</span></div>
+        <div class="spacing-row"><span class="spacing-row__token">--space-10</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width:40px;"></div></div><span class="spacing-row__val">40px</span></div>
+        <div class="spacing-row"><span class="spacing-row__token">--space-12</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width:48px;"></div></div><span class="spacing-row__val">48px</span></div>
+        <div class="spacing-row"><span class="spacing-row__token">--space-16</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width:64px;"></div></div><span class="spacing-row__val">64px</span></div>
+        <div class="spacing-row"><span class="spacing-row__token">--space-20</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width:80px;"></div></div><span class="spacing-row__val">80px</span></div>
+        <div class="spacing-row"><span class="spacing-row__token">--space-24</span><div class="spacing-row__bar-wrap"><div class="spacing-row__bar" style="width:96px;"></div></div><span class="spacing-row__val">96px</span></div>
+      </div>
+    </section>
+
+    <!-- 05 — RADIUS -->
+    <section class="ds-section">
+      <div class="ds-section__header">
+        <span class="ds-section__num">05—</span>
+        <h2 class="ds-section__title">Border Radius</h2>
+        <span class="ds-section__desc">Radius alto = identidade premium</span>
+      </div>
+      <div class="radius-grid">
+        <div class="radius-card">
+          <div class="radius-card__box" style="border-radius:0;"></div>
+          <div class="radius-card__token">--radius-none</div>
+          <div class="radius-card__val">0px</div>
+        </div>
+        <div class="radius-card">
+          <div class="radius-card__box" style="border-radius:8px;"></div>
+          <div class="radius-card__token">--radius-sm</div>
+          <div class="radius-card__val">8px · focus, icons</div>
+        </div>
+        <div class="radius-card">
+          <div class="radius-card__box" style="border-radius:14px;"></div>
+          <div class="radius-card__token">--radius-md</div>
+          <div class="radius-card__val">14px · btns, avatar</div>
+        </div>
+        <div class="radius-card">
+          <div class="radius-card__box" style="border-radius:20px;"></div>
+          <div class="radius-card__token">--radius-lg</div>
+          <div class="radius-card__val">20px · device cards</div>
+        </div>
+        <div class="radius-card">
+          <div class="radius-card__box" style="border-radius:28px;"></div>
+          <div class="radius-card__token">--radius-xl</div>
+          <div class="radius-card__val">28px · painéis</div>
+        </div>
+        <div class="radius-card">
+          <div class="radius-card__box" style="border-radius:36px;"></div>
+          <div class="radius-card__token">--radius-2xl</div>
+          <div class="radius-card__val">36px · hero, topbar</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 — ELEVAÇÃO -->
+    <section class="ds-section">
+      <div class="ds-section__header">
+        <span class="ds-section__num">06—</span>
+        <h2 class="ds-section__title">Elevação & Sombra</h2>
+        <span class="ds-section__desc">Neomorfismo claro · sombra dupla quente</span>
+      </div>
+      <div class="shadow-grid">
+        <div class="shadow-card">
+          <div class="shadow-demo" style="box-shadow: var(--neo-out-sm);"></div>
+          <div class="shadow-meta">
+            <div class="shadow-meta__token">--neo-out-sm</div>
+            <div class="shadow-meta__desc">Botões, icon-btns, badges</div>
+          </div>
+        </div>
+        <div class="shadow-card">
+          <div class="shadow-demo" style="box-shadow: var(--neo-card);"></div>
+          <div class="shadow-meta">
+            <div class="shadow-meta__token">--neo-card</div>
+            <div class="shadow-meta__desc">Cards, painéis, topbar</div>
+          </div>
+        </div>
+        <div class="shadow-card">
+          <div class="shadow-demo" style="box-shadow: var(--neo-out);"></div>
+          <div class="shadow-meta">
+            <div class="shadow-meta__token">--neo-out</div>
+            <div class="shadow-meta__desc">Elementos elevados, avatar</div>
+          </div>
+        </div>
+        <div class="shadow-card">
+          <div class="shadow-demo" style="box-shadow: var(--neo-float);"></div>
+          <div class="shadow-meta">
+            <div class="shadow-meta__token">--neo-float</div>
+            <div class="shadow-meta__desc">Hover state — máxima elevação</div>
+          </div>
+        </div>
+        <div class="shadow-card">
+          <div class="shadow-demo" style="box-shadow: var(--neo-in-sm);"></div>
+          <div class="shadow-meta">
+            <div class="shadow-meta__token">--neo-in-sm</div>
+            <div class="shadow-meta__desc">Nav ativo, inputs, campos</div>
+          </div>
+        </div>
+        <div class="shadow-card">
+          <div class="shadow-demo" style="box-shadow: var(--neo-in);"></div>
+          <div class="shadow-meta">
+            <div class="shadow-meta__token">--neo-in</div>
+            <div class="shadow-meta__desc">Hover em inputs, pressionado</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 — COMPONENTES -->
+    <section class="ds-section">
+      <div class="ds-section__header">
+        <span class="ds-section__num">07—</span>
+        <h2 class="ds-section__title">Componentes</h2>
+        <span class="ds-section__desc">Interaja com os exemplos</span>
+      </div>
+      <div class="component-grid">
+
+        <div class="component-demo">
+          <div class="component-demo__label">Botões</div>
+          <div class="component-demo__content">
+            <button class="btn-primary">Reserve Now ↗</button>
+            <button class="btn-ghost">View Details</button>
+            <button class="btn-accent">Accent CTA</button>
+            <button class="icon-btn" aria-label="Notificações">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="component-demo">
+          <div class="component-demo__label">Badges & Tags</div>
+          <div class="component-demo__content">
+            <span class="badge badge--cta">NEW</span>
+            <span class="badge badge--accent">Premium</span>
+            <span class="badge badge--success">↑ 4.2%</span>
+            <span class="badge badge--danger">↓ 1.8%</span>
+            <span class="badge badge--warning">! Alerta</span>
+            <span class="badge badge--neutral">23</span>
+          </div>
+        </div>
+
+        <div class="component-demo">
+          <div class="component-demo__label">Toggles & Search</div>
+          <div class="component-demo__content" style="gap:var(--space-6);">
+            <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+              <label class="ios-toggle" aria-label="Toggle on">
+                <input type="checkbox" checked>
+                <span class="ios-track"></span><span class="ios-thumb"></span>
+              </label>
+              <label class="ios-toggle" aria-label="Toggle off">
+                <input type="checkbox">
+                <span class="ios-track"></span><span class="ios-thumb"></span>
+              </label>
+            </div>
+            <div class="search-pill" tabindex="0" role="button">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <span>Search collection...</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="component-demo">
+          <div class="component-demo__label">Nav Item States</div>
+          <div class="component-demo__content" style="flex-direction:column; align-items:stretch; gap:var(--space-1);">
+            <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);color:var(--color-accent);background:var(--color-surface);box-shadow:var(--neo-in-sm);position:relative;">
+              <span style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:60%;background:var(--color-accent);border-radius:var(--radius-full);"></span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              <span style="font-size:var(--text-sm);">Dashboard</span>
+              <span style="margin-left:auto;font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text-3);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-full);padding:1px 7px;box-shadow:var(--neo-in-sm);">4</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);color:var(--color-text-2);cursor:pointer;transition:all var(--duration-base) var(--ease-out);" onmouseover="this.style.background='rgba(255,255,255,0.4)'; this.style.color='var(--color-text-1)'" onmouseout="this.style.background=''; this.style.color='var(--color-text-2)'">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/></svg>
+              <span style="font-size:var(--text-sm);">Collections</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);color:var(--color-text-2);cursor:pointer;" onmouseover="this.style.background='rgba(255,255,255,0.4)'" onmouseout="this.style.background=''">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span style="font-size:var(--text-sm);">Wishlist</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 08 — MOTION -->
+    <section class="ds-section">
+      <div class="ds-section__header">
+        <span class="ds-section__num">08—</span>
+        <h2 class="ds-section__title">Motion</h2>
+        <span class="ds-section__desc">Passe o mouse para animar</span>
+      </div>
+
+      <div class="motion-grid" style="margin-bottom:var(--space-6);">
+        <div class="motion-card" style="--tf:var(--ease-out);">
+          <div class="motion-card__label">ease-out</div>
+          <div class="motion-card__val">cubic-bezier(0.16, 1, 0.3, 1)</div>
+          <div class="motion-card__track" style="transition-timing-function:var(--ease-out);">
+            <div class="motion-card__fill" style="transition-duration:var(--duration-base); transition-timing-function:cubic-bezier(0.16,1,0.3,1);"></div>
+          </div>
+          <p style="font-size:var(--text-xs);color:var(--color-text-3);margin-top:var(--space-3);">Entrada rápida, saída suave. Padrão universal.</p>
+        </div>
+        <div class="motion-card">
+          <div class="motion-card__label">ease-spring</div>
+          <div class="motion-card__val">cubic-bezier(0.34, 1.56, 0.64, 1)</div>
+          <div class="motion-card__track">
+            <div class="motion-card__fill" style="transition-duration:var(--duration-base); transition-timing-function:cubic-bezier(0.34,1.56,0.64,1);"></div>
+          </div>
+          <p style="font-size:var(--text-xs);color:var(--color-text-3);margin-top:var(--space-3);">Overshoot suave. Toggles, wishlist, promo CTA.</p>
+        </div>
+        <div class="motion-card">
+          <div class="motion-card__label">ease-in</div>
+          <div class="motion-card__val">cubic-bezier(0.4, 0, 1, 1)</div>
+          <div class="motion-card__track">
+            <div class="motion-card__fill" style="transition-duration:var(--duration-base); transition-timing-function:cubic-bezier(0.4,0,1,1);"></div>
+          </div>
+          <p style="font-size:var(--text-xs);color:var(--color-text-3);margin-top:var(--space-3);">Aceleração. Para saída de elementos da tela.</p>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:var(--space-4);">
+        <div style="background:var(--color-glass);border:1px solid var(--color-border-light);border-bottom-color:var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5);box-shadow:var(--neo-card);">
+          <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text-3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:var(--space-2);">Fast</div>
+          <div style="font-family:var(--font-mono);font-size:var(--text-xl);font-weight:700;color:var(--color-text-1);">120ms</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-3);margin-top:var(--space-1);">hover de cor</div>
+        </div>
+        <div style="background:var(--color-glass);border:1px solid var(--color-border-light);border-bottom-color:var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5);box-shadow:var(--neo-card);">
+          <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text-3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:var(--space-2);">Base</div>
+          <div style="font-family:var(--font-mono);font-size:var(--text-xl);font-weight:700;color:var(--color-accent);">240ms</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-3);margin-top:var(--space-1);">transição padrão</div>
+        </div>
+        <div style="background:var(--color-glass);border:1px solid var(--color-border-light);border-bottom-color:var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5);box-shadow:var(--neo-card);">
+          <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text-3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:var(--space-2);">Slow</div>
+          <div style="font-family:var(--font-mono);font-size:var(--text-xl);font-weight:700;color:var(--color-text-1);">400ms</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-3);margin-top:var(--space-1);">entrada de página</div>
+        </div>
+        <div style="background:var(--color-glass);border:1px solid var(--color-border-light);border-bottom-color:var(--color-border);border-radius:var(--radius-lg);padding:var(--space-5);box-shadow:var(--neo-card);">
+          <div style="font-family:var(--font-mono);font-size:var(--text-xs);color:var(--color-text-3);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:var(--space-2);">Slower</div>
+          <div style="font-family:var(--font-mono);font-size:var(--text-xl);font-weight:700;color:var(--color-text-1);">700ms</div>
+          <div style="font-size:var(--text-xs);color:var(--color-text-3);margin-top:var(--space-1);">reveals lentos</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 09 — PROIBIÇÕES -->
+    <section class="ds-section">
+      <div class="ds-section__header">
+        <span class="ds-section__num">09—</span>
+        <h2 class="ds-section__title">O Que Este Sistema Nunca Faz</h2>
+        <span class="ds-section__desc">Critérios de consistência</span>
+      </div>
+      <div class="prohib-grid">
+        <div class="prohib-item">
+          <div class="prohib-item__x">✕</div>
+          <div class="prohib-item__text"><strong>FUNDO BRANCO PURO</strong>Nunca usar #FFFFFF ou cinza neutro. O marfim quente #F2EFE9 é o mínimo.</div>
+        </div>
+        <div class="prohib-item">
+          <div class="prohib-item__x">✕</div>
+          <div class="prohib-item__text"><strong>RGBA(0,0,0) EM SOMBRAS</strong>Sombras com tom quente areia apenas. Preto puro quebra o neomorfismo.</div>
+        </div>
+        <div class="prohib-item">
+          <div class="prohib-item__x">✕</div>
+          <div class="prohib-item__text"><strong>RADIUS ABAIXO DE 8PX</strong>Bordas retas são anti-identidade. Mínimo --radius-sm em elementos interativos.</div>
+        </div>
+        <div class="prohib-item">
+          <div class="prohib-item__x">✕</div>
+          <div class="prohib-item__text"><strong>CORES SATURADAS COMO ACCENT</strong>Azul vivo, verde neon, vermelho saturado violam a paleta de neutrals quentes.</div>
+        </div>
+        <div class="prohib-item">
+          <div class="prohib-item__x">✕</div>
+          <div class="prohib-item__text"><strong>ÍCONES FILLED</strong>Apenas outline stroke 1.5px (Lucide). Ícones preenchidos são massa demais.</div>
+        </div>
+        <div class="prohib-item">
+          <div class="prohib-item__x">✕</div>
+          <div class="prohib-item__text"><strong>TEXT-3 COMO BODY TEXT</strong>#B0A898 falha WCAG AA. Restrito a labels ornamentais uppercase ≥ 11px.</div>
+        </div>
+        <div class="prohib-item">
+          <div class="prohib-item__x">✕</div>
+          <div class="prohib-item__text"><strong>MOTION LINEAR</strong>Nunca transition-timing: linear. Mínimo ease-out; spring para interações táteis.</div>
+        </div>
+        <div class="prohib-item">
+          <div class="prohib-item__x">✕</div>
+          <div class="prohib-item__text"><strong>PESO 700 EM BODY TEXT</strong>Bold é reservado para Playfair Display em preços e títulos. DM Sans max: 500.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DS SNAPSHOT -->
+    <div class="snapshot-box">
+      <div class="snapshot-title">DS SNAPSHOT · IVORY RELIEF · v1.0</div>
+      <div class="snapshot-heading">
+        UI que transforma<br>interação em <em>ritual</em>.
+      </div>
+
+      <div class="snapshot-grid">
+        <div class="snapshot-item">
+          <div class="snapshot-item__label">Paleta Core</div>
+          <div class="snapshot-item__val">
+            <strong>#F2EFE9 Background</strong>
+            #EDE9E1 Surface<br>
+            #8C7355 Accent<br>
+            #3D3530 CTA
+          </div>
+        </div>
+        <div class="snapshot-item">
+          <div class="snapshot-item__label">Tipografia</div>
+          <div class="snapshot-item__val">
+            <strong>Playfair Display</strong>
+            DM Sans<br>
+            JetBrains Mono<br>
+            Escala: xs→4xl fluid
+          </div>
+        </div>
+        <div class="snapshot-item">
+          <div class="snapshot-item__label">Elevação</div>
+          <div class="snapshot-item__val">
+            <strong>Light Neomorphism</strong>
+            Sombra dupla quente<br>
+            + Glassmorphism<br>
+            6 variantes neo-*
+          </div>
+        </div>
+        <div class="snapshot-item">
+          <div class="snapshot-item__label">Motion</div>
+          <div class="snapshot-item__val">
+            <strong>ease-out / spring</strong>
+            Base: 240ms<br>
+            Entrada: 400ms<br>
+            Reduced motion ✓
+          </div>
+        </div>
+      </div>
+
+      <div class="snapshot-fidelity">
+        <div class="fid-label">Confirmado ~90%</div>
+        <div class="fid-bar-wrap">
+          <div class="fid-bar" style="width:90%;background:rgba(245,242,236,0.5);"></div>
+        </div>
+        <div class="fid-label">Inferido ~8%</div>
+        <div class="fid-bar-wrap">
+          <div class="fid-bar" style="width:8%;background:rgba(245,242,236,0.3);"></div>
+        </div>
+        <div class="fid-label">Estimado ~2%</div>
+        <div class="fid-bar-wrap">
+          <div class="fid-bar" style="width:2%;background:rgba(245,242,236,0.15);"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- COPY TOAST -->
+  <div class="copy-toast" id="copyToast">Copiado ✓</div>
+
+  <script>
+    // Copy hex on swatch click
+    document.querySelectorAll('[data-copy]').forEach(el => {
+      el.addEventListener('click', () => {
+        const val = el.dataset.copy;
+        navigator.clipboard.writeText(val).catch(() => {});
+        const toast = document.getElementById('copyToast');
+        toast.textContent = val + ' copiado ✓';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 1800);
+      });
+    });
+
+    // Toggle interaction
+    document.querySelectorAll('.ios-toggle input').forEach(input => {
+      input.addEventListener('change', () => {
+        input.closest('.ios-toggle').setAttribute('aria-checked', input.checked);
+      });
+    });
+
+    // Intersection Observer for staggered reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.animationPlayState = 'running';
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.ds-section').forEach(el => {
+      el.style.animationPlayState = 'paused';
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
